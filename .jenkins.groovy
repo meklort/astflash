@@ -46,6 +46,7 @@ def build(nodeName)
 {
     node(nodeName)
     {
+	githubNotify account: 'meklort', context: '', credentialsId: 'jenkins_status', description: '', gitApiUrl: '', repo: 'astflash', sha: GITHUB_BRANCH_HEAD_SHA, status: 'PENDING', targetUrl: 'http://bridge.meklort.com:8080/'
         stage('checkout')
         {
             checkout(
