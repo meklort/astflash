@@ -42,6 +42,20 @@
 /// @endcond
 ////////////////////////////////////////////////////////////////////////////////
 
+def notify(status, description)
+{
+    githubNotify account: 'meklort', 
+        context: JOB_NAME,
+        credentialsId: 'jenkins_status',
+        description: description,
+        gitApiUrl: '',
+        repo: 'astflash',
+        sha: GIT_COMMIT,
+        status: status,
+        targetUrl: BUILD_URL
+}
+
+
 def build(nodeName)
 {
     node(nodeName)
@@ -85,24 +99,25 @@ def build(nodeName)
 
 try
 {
-    githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Pending ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'PENDING', targetUrl: 'http://bridge.meklort.com:8080/'
+    notify('PENDING', 'Build Pending ')
+
     build('master')
     build('debian')
 }
 catch(e)
 {
-    githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
+    notify('ERROR', 'Build Error ')
     throw e
 }
 finally
 {
     def currentResult = currentBuild.result ?: 'SUCCESS'
-    else if(currentResult == 'SUCCESS')
+    if(currentResult == 'SUCCESS')
     {
-        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Passed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'SUCCESS', targetUrl: 'http://bridge.meklort.com:8080/'
+        notify('SUCCESS', 'Build Passed ')
     }
     else
     {
-        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
+        notify('FAILURE', 'Build Failed ')
     }
 }
