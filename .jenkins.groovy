@@ -97,12 +97,12 @@ catch(e)
 finally
 {
     def currentResult = currentBuild.result ?: 'SUCCESS'
-    if (currentResult == 'UNSTABLE')
+    else if(currentResult == 'SUCCESS')
     {
-        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
+        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Passed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'SUCCESS', targetUrl: 'http://bridge.meklort.com:8080/'
     }
     else
     {
-        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Passed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'PASSED', targetUrl: 'http://bridge.meklort.com:8080/'
+        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
     }
 }
