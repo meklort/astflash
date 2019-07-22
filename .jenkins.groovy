@@ -46,7 +46,6 @@ def build(nodeName)
 {
     node(nodeName)
     {
-	githubNotify account: 'meklort', context: env.JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Pending ', gitApiUrl: '', repo: 'astflash', sha: GITHUB_BRANCH_HEAD_SHA, status: 'pending', targetUrl: 'http://bridge.meklort.com:8080/'
         stage('checkout')
         {
             checkout(
@@ -84,5 +83,26 @@ def build(nodeName)
 }
 
 
-build('master')
-build('debian')
+try
+{
+    githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Pending ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'PENDING', targetUrl: 'http://bridge.meklort.com:8080/'
+    build('master')
+    build('debian')
+}
+catch(e)
+{
+    githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
+    throw e
+}
+finally
+{
+    def currentResult = currentBuild.result ?: 'SUCCESS'
+    if (currentResult == 'UNSTABLE')
+    {
+        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Failed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'FAILURE', targetUrl: 'http://bridge.meklort.com:8080/'
+    }
+    else
+    {
+        githubNotify account: 'meklort', context: JOB_NAME, credentialsId: 'jenkins_status', description: 'Build Passed ', gitApiUrl: '', repo: 'astflash', sha: GIT_COMMIT, status: 'PASSED', targetUrl: 'http://bridge.meklort.com:8080/'
+    }
+}
