@@ -107,6 +107,7 @@ try
 catch(e)
 {
     notify('ERROR', 'Build Error ')
+    currentBuild.result = 'FAILURE'
     throw e
 }
 finally
