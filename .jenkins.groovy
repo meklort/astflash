@@ -60,7 +60,8 @@ def build(nodeName)
 {
     node(nodeName)
     {
-        stage('checkout')
+        cleanWs()
+        stage(node_name + ' checkout')
         {
             checkout(
                 [$class: 'GitSCM', branches: [[name: '**']],
@@ -78,7 +79,7 @@ def build(nodeName)
                                 userRemoteConfigs: [[url: 'https://github.com/meklort/astflash.git']]])
         }
 
-        stage('build')
+        stage(node_name + ' build')
         {
             withEnv(['PATH+WHATEVER=/usr/local/bin']) {
                 sh '''#!/bin/bash
@@ -100,10 +101,10 @@ def build(nodeName)
 try
 {
     notify('PENDING', 'Build Pending ')
-    parallel {
-        fedora: { build('master') },
-        debian: { build('debian') },
-    }
+    parallel(
+        "fedora": { build('master') },
+        "debian": { build('debian') },
+    )
 }
 catch(e)
 {
