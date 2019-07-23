@@ -100,9 +100,10 @@ def build(nodeName)
 try
 {
     notify('PENDING', 'Build Pending ')
-
-    build('master')
-    build('debian')
+    parallel {
+        fedora: { build('master') },
+        debian: { build('debian') },
+    }
 }
 catch(e)
 {
