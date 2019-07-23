@@ -1,16 +1,16 @@
 ################################################################################
 ###
-### @file       CMakeLists.txt
+### @file       libs/OptParse/CMakeLists.txt
 ###
-### @project    astflash
+### @project    
 ###
-### @brief      Top level CMake file
-###
-################################################################################
+### @brief      Option Parsing CMake file
 ###
 ################################################################################
 ###
-### @copyright Copyright (c) 2019, Evan Lojewski
+################################################################################
+###
+### @copyright Copyright (c) 2018, Evan Lojewski
 ### @cond
 ###
 ### All rights reserved.
@@ -42,9 +42,7 @@
 ### @endcond
 ################################################################################
 
-cmake_minimum_required(VERSION 3.5.1)
-project(astflash)
+project(OptParse)
 
-include(cmake/clang-format.cmake)
-
-add_subdirectory(libs)
+add_library(${PROJECT_NAME} STATIC OptionParser.cpp OptionParser.h)
+target_include_directories(${PROJECT_NAME} PUBLIC .)
