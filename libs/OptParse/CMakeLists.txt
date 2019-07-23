@@ -44,6 +44,5 @@
 
 project(OptParse)
 
-# Host library Only
 add_library(${PROJECT_NAME} STATIC OptionParser.cpp OptionParser.h)
 target_include_directories(${PROJECT_NAME} PUBLIC .)
