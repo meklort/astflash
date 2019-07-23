@@ -1,10 +1,10 @@
 ################################################################################
 ###
-### @file       CMakeLists.txt
+### @file       libs/CMakeLists.txt
 ###
-### @project    astflash
+### @project    
 ###
-### @brief      Top level CMake file
+### @brief      Library CMake file
 ###
 ################################################################################
 ###
@@ -42,9 +42,4 @@
 ### @endcond
 ################################################################################
 
-cmake_minimum_required(VERSION 3.5.1)
-project(astflash)
-
-include(cmake/clang-format.cmake)
-
-add_subdirectory(libs)
+add_subdirectory(OptParse)
