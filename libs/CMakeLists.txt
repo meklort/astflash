@@ -43,3 +43,4 @@
 ################################################################################
 
 add_subdirectory(OptParse)
+add_subdirectory(serial)
