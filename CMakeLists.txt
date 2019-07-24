@@ -48,3 +48,13 @@ project(astflash)
 include(cmake/clang-format.cmake)
 
 add_subdirectory(libs)
+
+add_definitions(-Wall -Werror)
+set(SOURCES
+    main.cpp
+)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE OptParse serial )
+
+INSTALL(TARGETS ${PROJECT_NAME} DESTINATION .)
